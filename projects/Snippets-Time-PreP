@@ -1,0 +1,18 @@
+#Snippets:
+#date Time manipulation
+df['timestamp'] = df[['TheDate','TIME_OF_DAY']].apply(lambda x: ' '.join(x), axis=1)
+df['timestamp'] = pd.to_datetime(df['timestamp'], format = '%m/%d/%Y %H:%M:%S')
+df = df.drop_duplicates(subset=['timestamp'], keep = 'first')
+df.reset_index(inplace=True)
+df['Hour'] = df.timestamp.apply(lambda x: x.hour)
+df['Hour'] = df['Hour'].apply(lambda x: '{0:0>2}'.format(x))
+df['Min'] = df.timestamp.apply(lambda x: x.minute)
+df['Min'] = df['Min'].apply(lambda x: '{0:0>2}'.format(x))
+df['Month'] = df.timestamp.apply(lambda x: x.month)
+df['Month'] = df['Month'].apply(lambda x: '{0:0>2}'.format(x))
+df['Day'] = df.timestamp.apply(lambda x: x.day)
+df['Day'] = df['Day'].apply(lambda x: '{0:0>2}'.format(x))
+df['Year'] = df.timestamp.apply(lambda x: x.year)
+df['Weekday'] = df['timestamp'].dt.weekday_name
+df['Index'] = df['Year'].astype(str)+'-'+df['Month']+'-'+df['Day']+' '+df['Hour']+' '+df['Min']
+df.head()
